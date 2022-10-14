@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core">
+      
+    <ui:composition>
+    
+        <h:head>
+            <title><ui:insert name="titulo" >Sin titulo</ui:insert></title>
+        </h:head>
+        
+        <h:body>
+            <p:panel id="contenido">
+                
+                <h:form id="frmMenu">
+                    <p:growl id="mensaje" showDetail="true"/>
+                    <p:outputLabel for="idiomas" value="#{idioma['idiomas']}  "/>
+                    <p:selectOneMenu    id="idiomas"    
+                                        value="#{idiomaBean.idioma}" 
+                                        valueChangeListener="#{idiomaBean.cambioDeIdioma}"
+                                        onchange="submit()">
+                        <f:selectItems value="#{idiomaBean.idiomas}"/>
+                    </p:selectOneMenu> 
+                </h:form>
+                   	
+                <h2><ui:insert name="tituloEntity"></ui:insert></h2>
+               
+                <h:form id="frmTabla">
+                    <ui:insert name="tabla"></ui:insert>
+                </h:form>
+                
+                <h:form id="frmDetalle">
+                    <ui:insert name="formulario"></ui:insert>
+                </h:form>
+                
+            </p:panel>
+        </h:body>
+        
+    </ui:composition>
+    
+</html>

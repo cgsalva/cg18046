@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:cc="http://java.sun.com/jsf/composite">
+
+      <cc:interface >
+        <cc:attribute name="dataAccessBean" required="true" type="ues.occ.edu.sv.ingenieria.prn335.boundary.BackingBean" />
+    </cc:interface>
+
+    <cc:implementation>
+
+        <!-- Mensaje de confirmacion (Eliminar) -->
+
+        <p:confirmDialog    widgetVar="deleteDialog" 
+                            showEffect="fade"
+                            width="300"
+                            message="#{traduccion['mensajeEliminar']}"
+                            header="#{traduccion['confirme']}"
+                            severity="warn">
+            <p:commandButton    value="#{traduccion['si']}" 
+                                icon="pi pi-check" 
+                                actionListener="#{cc.attrs.dataAccessBean.eliminar}"
+                                update=":frmTabla frmDetalle:frmRegistro :frmMenu:mensaje"
+                                oncomplete="PF('deleteDialog').hide()" />
+            <p:commandButton    value="#{traduccion['no']}" 
+                                type="button" 
+                                styleClass="ui-button-secondary" 
+                                icon="pi pi-times"
+                                onclick="PF('deleteDialog').hide()" />
+        </p:confirmDialog>
+                            
+    </cc:implementation>
+
+</html>

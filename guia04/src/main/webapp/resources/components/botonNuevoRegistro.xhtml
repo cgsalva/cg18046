@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:cc="http://java.sun.com/jsf/composite">
+
+      <cc:interface >
+        <cc:attribute name="dataAccessBean" required="true" type="ues.occ.edu.sv.ingenieria.prn335.boundary.BackingBean" />
+    </cc:interface>
+
+    <cc:implementation>
+
+        <!-- Boton para crear un nuevo registro -->
+
+        <p:commandButton    value="#{traduccion['nuevo']}" 
+                            actionListener="#{cc.attrs.dataAccessBean.nuevoEstado}"
+                            icon="pi pi-plus" 
+                            update=":frmDetalle:manage-content" 
+                            oncomplete="PF('manageDialog').show()" 
+                            styleClass="ui-button-success" 
+                            style="margin: 0 5px 5px 0"/>
+                            
+    </cc:implementation>
+
+</html>

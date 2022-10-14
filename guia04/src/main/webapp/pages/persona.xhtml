@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:comp="http://java.sun.com/jsf/composite/components">
+      
+    <ui:composition template="../resources/templates/plantilla.xhtml">
+        
+        <ui:define name="titulo">#{traduccion['personas']}</ui:define>
+        
+        <ui:define name="tituloEntity">#{traduccion['personas']}</ui:define>
+        
+        <ui:define name="tabla">
+            
+            <comp:mensajeConfirmacion dataAccessBean="#{personaBean}"/>
+            
+            <comp:botonNuevoRegistro dataAccessBean="#{personaBean}"/>
+            
+            <p:commandButton value="#{traduccion['exportarPdf']}" icon="pi pi-file-pdf" styleClass="ui-button-help">
+                <p:printer target="tabla" title="Personas" />
+            </p:commandButton>
+
+            <p:dataTable id="tabla" 
+                        value="#{personaBean.lista}" 
+                        var="p"
+                        lazy="true"
+                        paginator="true"
+                        rows="5"
+                        selectionMode="single"
+                        selection="#{personaBean.entity}"
+                        disabledSelection="#{personaBean.seleccion}"
+                        paginatorPosition="bottom">
+                <p:ajax update="frmTabla  frmDetalle" listener="#{personaBean.cambiarSeleccion()}" oncomplete="PF('manageDialog').show()" event="rowSelect"/>
+                <p:column headerText="#{traduccion['id']}">
+                    <h:outputText value="#{p.idPersona}"/>
+                </p:column>
+                <p:column headerText="#{traduccion['nombres']}">
+                    <h:outputText value="#{p.nombres}"/>
+                </p:column>
+                <p:column headerText="#{traduccion['apellidos']}">
+                    <h:outputText value="#{p.apellidos}"/>
+                </p:column>
+                <p:column headerText="#{traduccion['genero']}">
+                    <h:outputText value="#{p.genero}"/>
+                </p:column>
+                <p:column headerText="#{traduccion['fechaNacimiento']}">
+                    <h:outputText value="#{p.fechaNacimiento}">
+                    	<f:convertDateTime pattern="dd/MM/yyyy" />
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="#{traduccion['direccion']}">
+                    <h:outputText value="#{p.direccion}"/>
+                </p:column>
+            </p:dataTable>
+        </ui:define>
+        
+        <ui:define name="formulario" >
+            <p:dialog header="#{traduccion['persona']}" showEffect="fade" modal="true" widgetVar="manageDialog" responsive="true">
+                <p:outputPanel id="manage-content" class="ui-fluid">
+                    <p:panel id="frmRegistro" rendered="#{personaBean.estado=='EDITAR' or personaBean.estado=='NUEVO'}">
+                        <p:panelGrid columns="2">
+                            <h:outputLabel for="idPersona" value="#{traduccion['id']}:"/>
+                            <p:inputText id="idPersona" value="#{personaBean.entity.idPersona}" label="idPersona"/>
+                            <h:outputLabel for="nombres" value="#{traduccion['nombres']}:"/>
+                            <p:inputText id="nombres" value="#{personaBean.entity.nombres}" required="true"/>
+                            <h:outputLabel for="apellidos" value="#{traduccion['apellidos']}:"/>
+                            <p:inputText id="apellidos" value="#{personaBean.entity.apellidos}" required="true"/>
+                            <p:outputLabel for="genero" value="#{traduccion['genero']}:"/>
+                            <p:selectOneMenu id="genero" value="#{personaBean.entity.genero}" required="true">
+                                <f:selectItem itemLabel="#{traduccion['seleccioneGenero']}" itemValue=""/>
+                                <f:selectItem itemLabel="#{traduccion['masculino']}" itemValue="m"/>
+                                <f:selectItem itemLabel="#{traduccion['femenino']}" itemValue="f"/>
+                            </p:selectOneMenu>
+                            <h:outputLabel for="fechaNacimiento" value="#{traduccion['fechaNacimiento']}:"/>
+                            <p:datePicker id="fechaNacimiento" value="#{personaBean.entity.fechaNacimiento}" pattern="yyyy/MM/dd" required="true"/>
+                            <h:outputLabel for="direccion" value="#{traduccion['direccion']}:"/>
+                            <p:inputText id="direccion" value="#{personaBean.entity.direccion}" required="true"/>
+                        </p:panelGrid>
+                        
+                        <comp:botonesFormulario dataAccessBean="#{personaBean}"/>
+
+                    </p:panel>
+                </p:outputPanel>
+            </p:dialog>
+        </ui:define>
+        
+    </ui:composition>
+
+</html>
