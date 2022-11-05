@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <title>Cliente Persona</title>
+    </h:head>
+    <h:body>
+        <h:form id="frmClientePersonas">
+            <h:panelGrid>
+                <p:dataTable id="tablaPersonas" 
+                                value="#{frmClientePersona.model}" 
+                                var="per"
+                                lazy="true"
+                                paginator="true"
+                                rows="5"
+                                paginatorPosition="bottom">
+                    <p:column headerText="Id">
+                        <h:outputText value="#{per.idPersona}"/>
+                    </p:column>
+                    <p:column headerText="Nombres">
+                        <h:outputText value="#{per.nombres}"/>
+                    </p:column>
+                    <p:column headerText="Apellidos">
+                        <h:outputText value="#{per.apellidos}"/>
+                    </p:column>
+                    <p:column headerText="Genero">
+                        <h:outputText value="#{per.genero}"/>
+                    </p:column>
+                    <p:column headerText="Fecha de Nacimiento">
+                        <h:outputText value="#{per.fechaNacimiento}">
+                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                        </h:outputText>
+                    </p:column>
+                </p:dataTable>
+            </h:panelGrid>
+            <p:commandButton value="Nuevo" actionListener="#{frmClientePersona.btnNuevoHandler}" rendered="#{frmClientePersona.estado=='NINGUNO'}" update="@all"/>
+            <p:commandButton value="Cancelar" actionListener="#{frmClientePersona.btnCancelar}" rendered="#{frmClientePersona.estado!='NINGUNO'}" styleClass="ui-button-secondary" update="@all"/>
+        </h:form>
+        <h:panelGroup id="pnlPersonas" rendered="#{frmClientePersona.estado!='NINGUNO'}">
+            <h:form id="frmDetallePersona">
+                <p:messages showDetail="true"/>
+                <h:panelGrid columns="2">
+                    <p:outputLabel for="txtId" value="Id"/>
+                    <p:inputText id="txtId" value="#{frmClientePersona.registro.idPersona}" readonly="true" disabled="true" label="idPersona"/>
+                    <p:outputLabel for="txtNombres" value="Nombres"/>
+                    <p:inputText id="txtNombres" value="#{frmClientePersona.registro.nombres}" required="true"/>
+                    <p:outputLabel for="txtApellidos" value="Apellidos"/>
+                    <p:inputText id="txtApellidos" value="#{frmClientePersona.registro.apellidos}" required="true"/>
+                    <p:outputLabel for="lstGenero" value="Genero"/>
+                    <p:selectOneMenu id="lstGenero" value="#{frmClientePersona.registro.genero}" required="true">
+                        <f:selectItem itemLabel="Seleccione genero" itemValue=""/>
+                        <f:selectItem itemLabel="Masculino" itemValue="m"/>
+                        <f:selectItem itemLabel="Femenino" itemValue="f"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel for="txtFechaNacimiento" value="Fecha de nacimiento"/>
+                    <p:calendar id="txtFechaNacimiento" value="#{frmClientePersona.registro.fechaNacimiento}" pattern="dd/MM/yyyy" required="true"/>
+                    <p:outputLabel for="txtDireccion" value="Direccion"/>
+                    <p:inputText id="txtDireccion" value="#{frmClientePersona.registro.direccion}" required="true"/>
+                    <p:commandButton value="Guardar" actionListener="#{frmClientePersona.crear}" update="@all"/> 
+                </h:panelGrid>
+            </h:form>
+        </h:panelGroup>
+    </h:body>
+</html>
